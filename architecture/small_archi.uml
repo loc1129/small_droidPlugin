@@ -1,0 +1,80 @@
+@startuml
+
+[-> Small: preSetup
+activate Small
+
+Small -> Bundle: registerLauncher
+activate Bundle
+
+Bundle -->Small
+deactivate Bundle
+
+Small -> Bundle:onCreateLauncher
+activate Bundle
+
+Bundle -> BundleLauncher: onCreate
+activate BundleLauncher
+
+BundleLauncher --> Bundle
+deactivate BundleLauncher
+
+Bundle --> Small
+deactivate Bundle
+
+[<- Small
+deactivate Small
+
+=====================
+
+[-> Small: Setup
+activate Small 
+
+Small -> Bundle: LoadLaunchableBundles
+activate Bundle
+
+Bundle -> LoadBundleThread: create (new)
+activate LoadBundleThread
+
+LoadBundleThread --> Bundle
+deactivate LoadBundleThread
+
+Bundle --> Small 
+deactivate Bundle
+
+[<-Small 
+deactivate Small 
+
+LoadBundleThread -> Bundle: LoadBundles
+activate Bundle
+
+Bundle -> BundleLauncher: Setup
+BundleLauncher --> Bundle
+deactivate BundleLauncher
+
+Bundle -> Bundle: prepareForLauncher
+activate Bundle
+
+Bundle -> BundleLauncher: resolveBundle
+activate BundleLauncher
+
+BundleLauncher -> BundleLauncher: preload
+BundleLauncher -> BundleLauncher: loadBundle
+
+BundleLauncher --> Bundle
+deactivate BundleLauncher
+
+Bundle --> Bundle
+deactivate Bundle
+
+Bundle -> BundleLauncher: postSetup
+activate BundleLauncher
+
+BundleLauncher --> Bundle
+deactivate BundleLauncher
+
+Bundle --> LoadBundleThread
+deactivate Bundle
+
+===================================
+
+@enduml
